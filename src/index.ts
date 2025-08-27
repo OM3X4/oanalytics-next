@@ -21,8 +21,6 @@ interface AnalyticsTrackerProps {
 export const AnalyticsTracker = (
     { appId }: AnalyticsTrackerProps
 ) => {
-    console.log("I am working bitch")
-
     if (typeof window === "undefined") return ""; // server: return empty
 
     const pathname = usePathname();
