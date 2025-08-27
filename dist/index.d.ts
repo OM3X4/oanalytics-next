@@ -1,6 +1,8 @@
+import * as react from 'react';
+
 interface AnalyticsTrackerProps {
     appId: string;
 }
-declare const AnalyticsTracker: ({ appId }: AnalyticsTrackerProps) => "" | null;
+declare const AnalyticsTracker: react.ComponentType<AnalyticsTrackerProps>;
 
 export { AnalyticsTracker };
