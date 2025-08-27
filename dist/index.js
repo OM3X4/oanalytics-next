@@ -37,6 +37,7 @@ function getOrCreateClientId() {
   return id;
 }
 var AnalyticsTracker = ({ appId }) => {
+  console.log("I am working bitch");
   if (typeof window === "undefined") return "";
   const pathname = (0, import_navigation.usePathname)();
   const searchParams = (0, import_navigation.useSearchParams)();
