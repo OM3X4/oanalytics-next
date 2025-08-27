@@ -27,6 +27,7 @@ module.exports = __toCommonJS(index_exports);
 var import_react = require("react");
 var import_navigation = require("next/navigation");
 function getOrCreateClientId() {
+  if (typeof window === "undefined") return "";
   const key = "oAnalytics_id";
   let id = localStorage.getItem(key);
   if (!id) {
@@ -36,6 +37,7 @@ function getOrCreateClientId() {
   return id;
 }
 var AnalyticsTracker = ({ appId }) => {
+  if (typeof window === "undefined") return "";
   const pathname = (0, import_navigation.usePathname)();
   const searchParams = (0, import_navigation.useSearchParams)();
   const [sessionId] = (0, import_react.useState)(() => crypto.randomUUID());

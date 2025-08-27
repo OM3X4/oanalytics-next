@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 
 function getOrCreateClientId() {
+    if (typeof window === "undefined") return ""; // server: return empty
     const key = "oAnalytics_id";
     let id = localStorage.getItem(key);
     if (!id) {
@@ -20,6 +21,8 @@ interface AnalyticsTrackerProps {
 export const AnalyticsTracker = (
     { appId }: AnalyticsTrackerProps
 ) => {
+
+    if (typeof window === "undefined") return ""; // server: return empty
 
     const pathname = usePathname();
     const searchParams = useSearchParams();
