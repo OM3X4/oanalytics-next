@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+// import { usePathname, useSearchParams } from "next/navigation";
 
 // function getOrCreateClientId() {
 //     if (typeof window === "undefined") return ""; // server: return empty
