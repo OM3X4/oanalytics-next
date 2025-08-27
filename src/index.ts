@@ -1,6 +1,5 @@
-'use client'
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { usePathname, useSearchParams } from "next/navigation";
 
 function getOrCreateClientId() {
     const key = "oAnalytics_id";
@@ -13,49 +12,23 @@ function getOrCreateClientId() {
 }
 
 interface AnalyticsTrackerProps {
-    appId: string; // ✅ mandatory
+    appId: string;
 }
+
 
 export const AnalyticsTracker = (
     { appId }: AnalyticsTrackerProps
 ) => {
-    const router = useRouter();
+
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
 
     const [sessionId] = useState(() => crypto.randomUUID());
 
-
-    // useEffect(() => {
-    //     async function send() {
-    //         const payload = {
-    //             session_id: sessionId,
-    //             client_id: getOrCreateClientId(),
-    //             path: location.pathname + location.search + location.hash,
-    //             search: location.search,
-    //             hash: location.hash,
-    //             timestamp: Date.now(),
-    //             userAgent: navigator.userAgent,
-    //             referrer: document.referrer || "direct",
-    //             app_id: appId
-    //         };
-
-    //         // navigator.sendBeacon("http://localhost:3000/log", JSON.stringify(payload));
-
-
-    //         const response = await fetch("https://oanalytics-server-production.up.railway.app/log", {
-    //             method: "POST",
-    //             headers: { "Content-Type": "application/json" },
-    //             body: JSON.stringify(payload),
-    //         });
-    //         const result = await response.json();
-    //         console.log(result);
-    //     }
-
-    //     send()
-    // }, [location, navType]);
+    const url = pathname + (searchParams?.toString() ? `?${searchParams}` : "");
 
     useEffect(() => {
-        const handleRouteChange = (url: string) => {
-
+        async function send() {
             const payload = {
                 session_id: sessionId,
                 client_id: getOrCreateClientId(),
@@ -68,27 +41,21 @@ export const AnalyticsTracker = (
                 app_id: appId
             };
 
+            // navigator.sendBeacon("http://localhost:3000/log", JSON.stringify(payload));
 
-            // send page view event
-            fetch("https://oanalytics-server-production.up.railway.app/log", {
+
+            const response = await fetch("https://oanalytics-server-production.up.railway.app/log", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),
             });
-        };
+            const result = await response.json();
+            console.log(result);
+        }
 
-        // fire on mount
-        handleRouteChange(window.location.pathname + window.location.search);
-
-        // fire on route changes
-        router.events.on("routeChangeComplete", handleRouteChange);
-        return () => {
-            router.events.off("routeChangeComplete", handleRouteChange);
-        };
-    }, [appId, router]);
+        send()
+    }, [pathname, searchParams, appId]);
 
     return null;
 };
-
-
 
