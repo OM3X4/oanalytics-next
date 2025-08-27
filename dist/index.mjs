@@ -15,7 +15,6 @@ function getOrCreateClientId() {
   return id;
 }
 var AnalyticsTracker = ({ appId }) => {
-  console.log("I am working bitch");
   if (typeof window === "undefined") return "";
   const pathname = usePathname();
   const searchParams = useSearchParams();
