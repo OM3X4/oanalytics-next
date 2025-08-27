@@ -24,7 +24,48 @@ __export(index_exports, {
   AnalyticsTracker: () => AnalyticsTracker
 });
 module.exports = __toCommonJS(index_exports);
-var AnalyticsTracker = () => {
+var import_react = require("react");
+var import_navigation = require("next/navigation");
+function getOrCreateClientId() {
+  if (typeof window === "undefined") return "";
+  const key = "oAnalytics_id";
+  let id = localStorage.getItem(key);
+  if (!id) {
+    id = crypto.randomUUID();
+    localStorage.setItem(key, id);
+  }
+  return id;
+}
+var AnalyticsTracker = ({ appId }) => {
+  if (typeof window === "undefined") return "";
+  const pathname = (0, import_navigation.usePathname)();
+  const searchParams = (0, import_navigation.useSearchParams)();
+  const [sessionId] = (0, import_react.useState)(() => crypto.randomUUID());
+  const url = pathname + ((searchParams == null ? void 0 : searchParams.toString()) ? `?${searchParams}` : "");
+  (0, import_react.useEffect)(() => {
+    async function send() {
+      const payload = {
+        session_id: sessionId,
+        client_id: getOrCreateClientId(),
+        path: url,
+        search: location.search,
+        hash: location.hash,
+        timestamp: Date.now(),
+        userAgent: navigator.userAgent,
+        referrer: document.referrer || "direct",
+        app_id: appId
+      };
+      const response = await fetch("https://oanalytics-server-production.up.railway.app/log", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const result = await response.json();
+      console.log(result);
+    }
+    send();
+  }, [pathname, searchParams, appId]);
+  return null;
 };
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {

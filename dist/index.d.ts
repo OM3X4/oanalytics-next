@@ -1,3 +1,6 @@
-declare const AnalyticsTracker: () => void;
+interface AnalyticsTrackerProps {
+    appId: string;
+}
+declare const AnalyticsTracker: ({ appId }: AnalyticsTrackerProps) => "" | null;
 
 export { AnalyticsTracker };
