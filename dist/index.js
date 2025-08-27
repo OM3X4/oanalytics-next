@@ -1,3 +1,4 @@
+"use client";
 "use strict";
 "use client";
 var __defProp = Object.defineProperty;
