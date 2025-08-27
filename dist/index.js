@@ -1,5 +1,4 @@
 "use strict";
-"use client";
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
@@ -25,7 +24,7 @@ __export(index_exports, {
 });
 module.exports = __toCommonJS(index_exports);
 var import_react = require("react");
-var import_router = require("next/router");
+var import_navigation = require("next/navigation");
 function getOrCreateClientId() {
   const key = "oAnalytics_id";
   let id = localStorage.getItem(key);
@@ -36,10 +35,12 @@ function getOrCreateClientId() {
   return id;
 }
 var AnalyticsTracker = ({ appId }) => {
-  const router = (0, import_router.useRouter)();
+  const pathname = (0, import_navigation.usePathname)();
+  const searchParams = (0, import_navigation.useSearchParams)();
   const [sessionId] = (0, import_react.useState)(() => crypto.randomUUID());
+  const url = pathname + ((searchParams == null ? void 0 : searchParams.toString()) ? `?${searchParams}` : "");
   (0, import_react.useEffect)(() => {
-    const handleRouteChange = (url) => {
+    async function send() {
       const payload = {
         session_id: sessionId,
         client_id: getOrCreateClientId(),
@@ -51,18 +52,16 @@ var AnalyticsTracker = ({ appId }) => {
         referrer: document.referrer || "direct",
         app_id: appId
       };
-      fetch("https://oanalytics-server-production.up.railway.app/log", {
+      const response = await fetch("https://oanalytics-server-production.up.railway.app/log", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       });
-    };
-    handleRouteChange(window.location.pathname + window.location.search);
-    router.events.on("routeChangeComplete", handleRouteChange);
-    return () => {
-      router.events.off("routeChangeComplete", handleRouteChange);
-    };
-  }, [appId, router]);
+      const result = await response.json();
+      console.log(result);
+    }
+    send();
+  }, [pathname, searchParams, appId]);
   return null;
 };
 // Annotate the CommonJS export names for ESM import in node:
