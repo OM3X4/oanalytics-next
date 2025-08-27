@@ -1,2 +1,3 @@
+declare const AnalyticsTracker: () => void;
 
-export {  }
+export { AnalyticsTracker };

@@ -18,48 +18,48 @@ import { useEffect, useState } from "react";
 // }
 
 
-// export const AnalyticsTracker = (
-//     { appId }: AnalyticsTrackerProps
-// ) => {
+export const AnalyticsTracker = (
+    // { appId }: AnalyticsTrackerProps
+) => {
 
-//     if (typeof window === "undefined") return ""; // server: return empty
+    // if (typeof window === "undefined") return ""; // server: return empty
 
-//     const pathname = usePathname();
-//     const searchParams = useSearchParams();
+    // const pathname = usePathname();
+    // const searchParams = useSearchParams();
 
-//     const [sessionId] = useState(() => crypto.randomUUID());
+    // const [sessionId] = useState(() => crypto.randomUUID());
 
-//     const url = pathname + (searchParams?.toString() ? `?${searchParams}` : "");
+    // const url = pathname + (searchParams?.toString() ? `?${searchParams}` : "");
 
-//     useEffect(() => {
-//         async function send() {
-//             const payload = {
-//                 session_id: sessionId,
-//                 client_id: getOrCreateClientId(),
-//                 path: url,
-//                 search: location.search,
-//                 hash: location.hash,
-//                 timestamp: Date.now(),
-//                 userAgent: navigator.userAgent,
-//                 referrer: document.referrer || "direct",
-//                 app_id: appId
-//             };
+    // useEffect(() => {
+    //     async function send() {
+    //         const payload = {
+    //             session_id: sessionId,
+    //             client_id: getOrCreateClientId(),
+    //             path: url,
+    //             search: location.search,
+    //             hash: location.hash,
+    //             timestamp: Date.now(),
+    //             userAgent: navigator.userAgent,
+    //             referrer: document.referrer || "direct",
+    //             app_id: appId
+    //         };
 
-//             // navigator.sendBeacon("http://localhost:3000/log", JSON.stringify(payload));
+    //         // navigator.sendBeacon("http://localhost:3000/log", JSON.stringify(payload));
 
 
-//             const response = await fetch("https://oanalytics-server-production.up.railway.app/log", {
-//                 method: "POST",
-//                 headers: { "Content-Type": "application/json" },
-//                 body: JSON.stringify(payload),
-//             });
-//             const result = await response.json();
-//             console.log(result);
-//         }
+    //         const response = await fetch("https://oanalytics-server-production.up.railway.app/log", {
+    //             method: "POST",
+    //             headers: { "Content-Type": "application/json" },
+    //             body: JSON.stringify(payload),
+    //         });
+    //         const result = await response.json();
+    //         console.log(result);
+    //     }
 
-//         send()
-//     }, [pathname, searchParams, appId]);
+    //     send()
+    // }, [pathname, searchParams, appId]);
 
-//     return null;
-// };
+    // return null;
+};
 
